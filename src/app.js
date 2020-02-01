@@ -3,7 +3,7 @@ const swaggerUi = require('swagger-ui-express');
 require('./db/mongoose');
 
 const router = require('./router');
-const swaggerDocument = require('./swagger.yaml');
+const swaggerDocument = require('./swagger.json');
 const { MOUNT_POINT = '' } = process.env;
 
 const app = express();
