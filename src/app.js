@@ -1,13 +1,15 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
 require('./db/mongoose');
 
-const userRouter = require('./routes/user');
-const taskRouter = require('./routes/task');
+const router = require('./router');
+const swaggerDocument = require('./swagger.yaml');
+const { MOUNT_POINT = '' } = process.env;
 
 const app = express();
 
 app.use(express.json());
-app.use(userRouter);
-app.use(taskRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(MOUNT_POINT, router);
 
 module.exports = app;

@@ -3,21 +3,21 @@ const request = require('supertest');
 const app = require('../src/app');
 const User = require('../src/models/User');
 const { userOne, userTwo, userThree, setupDatabase } = require('./fixtures/db');
-
+const { MOUNT_POINT } = process.env;
 
 describe('User API', () => {
   beforeEach(setupDatabase);
 
   test('should Sign up new user', async () => {
     await request(app)
-      .post('/users')
+      .post(MOUNT_POINT + '/users')
       .send(userThree)
       .expect(201);
   });
 
   test('should login existing user', async () => {
     const response = await request(app)
-      .post('/users/login')
+      .post(MOUNT_POINT + '/users/login')
       .send({
         email: userOne.email,
         password: userOne.password
@@ -29,7 +29,7 @@ describe('User API', () => {
 
   test('should not login non-existing user', async () => {
     await request(app)
-      .post('/users/login')
+      .post(MOUNT_POINT + '/users/login')
       .send({
         email: userOne.email,
         password: userOne.password + '_bad',
@@ -39,7 +39,7 @@ describe('User API', () => {
 
   test('should get user profile', async () => {
     await request(app)
-      .get('/users/me')
+      .get(MOUNT_POINT + '/users/me')
       .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
       .send()
       .expect(200)
@@ -47,7 +47,7 @@ describe('User API', () => {
 
   test('should delete account for a user', async () => {
     await request(app)
-      .delete('/users/me')
+      .delete(MOUNT_POINT + '/users/me')
       .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
       .send()
       .expect(200)
@@ -55,14 +55,14 @@ describe('User API', () => {
 
   test('should not delete account for an unauthenticated user', async () => {
     await request(app)
-      .delete('/users/me')
+      .delete(MOUNT_POINT + '/users/me')
       .send()
       .expect(401)
   });
 
   test('should upload avatar image', async () => {
     await request(app)
-      .post('/users/me/avatar')
+      .post(MOUNT_POINT + '/users/me/avatar')
       .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
       .attach('avatar', 'tests/fixtures/profile-pic.jpg')
       .expect(200);
@@ -74,7 +74,7 @@ describe('User API', () => {
 
   test('should update valid user field', async () => {
     await request(app)
-      .patch('/users/me')
+      .patch(MOUNT_POINT + '/users/me')
       .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
       .send({
         name: userTwo.name
@@ -88,7 +88,7 @@ describe('User API', () => {
 
   test('should not update non-valid user field', async () => {
     await request(app)
-      .patch('/users/me')
+      .patch(MOUNT_POINT + '/users/me')
       .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
       .send({
         firstName: userTwo.name
