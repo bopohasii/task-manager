@@ -4,13 +4,14 @@ require('./db/mongoose');
 
 const router = require('./router');
 const swaggerDocument = require('./swagger.json');
-const { MOUNT_POINT, APP_ENV } = process.env;
+const { MOUNT_POINT, NODE_ENV, PORT } = process.env;
 
 const app = express();
 
+app.set('port', PORT);
 app.use(express.json());
 
-if (APP_ENV === 'development') {
+if (NODE_ENV === 'development') {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 app.use(MOUNT_POINT, router);

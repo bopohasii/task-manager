@@ -1,4 +1,3 @@
 const app = require('./app');
-const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log('Launch up is on ' + port));
+app.listen(app.get('port'), () => console.log('Launch up is on ' + app.get('port')));
