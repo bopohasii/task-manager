@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const swaggerUi = require('swagger-ui-express');
 require('./db/mongoose');
 
@@ -9,6 +10,7 @@ const { MOUNT_POINT, NODE_ENV, PORT } = process.env;
 const app = express();
 
 app.set('port', PORT);
+app.use(morgan('dev'));
 app.use(express.json());
 
 if (NODE_ENV === 'development') {
