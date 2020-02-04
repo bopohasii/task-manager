@@ -1,6 +1,8 @@
 # app
 config/
 mongodb/
+.ebextensions/
+.ebignore
 
 # System
 .idea/
