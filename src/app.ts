@@ -18,4 +18,4 @@ if (NODE_ENV === 'development') {
 }
 app.use(MOUNT_POINT, router);
 
-module.exports = app;
+export = app;
